@@ -5,6 +5,7 @@ class Person:
         self.name = name
         self.partner = None
         self.children = []    
+        self.has_parent = False
     
     def add_partner(self, partner):
         if self.partner is not None:
@@ -48,13 +49,98 @@ class FamilyTree:
             person2 = self.people[id2]
             person1.add_partner(person2)
         else:
-            print(f"Algun ID no existe en el arbol.")
+            print("Algun ID no existe en el arbol.")
             
     def add_child(self, parent_id, child_id):
         if parent_id in self.people and child_id in self.people:
-            parent = self.people[parent_id]
-            child = self.people[child_id]
-            parent.add_child(child)
+            if parent_id == child_id:
+                print("Los ID no pueden ser iguales a la hora de asignar un hijo.")
+            else:
+                parent = self.people[parent_id]
+                if parent.partner is None:
+                    print(f"Se necesita una pareja para poder tener un hijo.")
+                else:
+                    child = self.people[child_id]
+                    if child.has_parent:
+                        print(f"{child.name} [ID: {child.id}] ya tiene padres.")
+                    else:    
+                        child.has_parent = True
+                        parent.add_child(child)
+                        parent.partner.add_child(child)
+        else:
+            print("Algun ID no existe en el arbol.")
     
     def print_tree(self):
-        pass
+        
+        visited = set()
+        
+        def print_person(person, level = 0):
+            if person.id in visited:
+                return
+            visited.add(person.id)
+            indent = "\t" * level
+            print(f"{indent} - {person.name} [ID: {person.id}]")
+        
+            if person.partner:
+                visited.add(person.partner.id)
+                print(f"{indent} Pareja: {person.partner.name} [ID: {person.id}]")
+
+            if person.children:
+                print(f"{indent} Hijos:")
+                for child in person.children:
+                    print_person(child, level + 1)
+            
+        for person in self.people.values():
+            is_child = person.has_parent
+            if not is_child:
+                print_person(person)
+    
+tree = FamilyTree()
+
+tree.add_person(1, "Jocelyn")
+tree.add_person(2, "Aemon")
+
+tree.set_partner(1, 2)
+
+tree.add_person(3, "Rhaenys")
+
+tree.add_child(1, 3)
+
+tree.add_person(4, "Corlys")
+
+tree.set_partner(3, 4)
+
+tree.add_person(5, "Laena")
+tree.add_person(6, "Laenor")
+
+tree.add_child(3, 5)
+tree.add_child(3, 6)
+
+tree.add_person(7, "Baelon")
+tree.add_person(8, "Alyssa")
+
+tree.set_partner(7, 8)
+
+tree.add_person(9, "Viserys I")
+tree.add_person(10, "Daemon")
+
+tree.add_child(7, 9)
+tree.add_child(8, 10)
+
+tree.add_person(11, "Aemma")
+
+tree.set_partner(9, 11)
+
+tree.add_person(12, "Rhaenyra")
+
+tree.add_child(9, 12)
+
+tree.set_partner(10, 12)
+
+tree.add_person(13, "Aegon")
+tree.add_person(14, "Viserys")
+
+tree.add_child(12, 13)
+tree.add_child(12, 14)
+
+tree.print_tree()
