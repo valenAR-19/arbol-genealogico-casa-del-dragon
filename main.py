@@ -42,11 +42,19 @@ class FamilyTree:
         else:
             print(f"La persona con ID: {id} no existe en el arbol.")
             
-    def set_partner(self):
-        pass
-    
-    def add_child(self):
-        pass
+    def set_partner(self, id1, id2):
+        if id1 in self.people and id2 in self.people:
+            person1 = self.people[id1]
+            person2 = self.people[id2]
+            person1.add_partner(person2)
+        else:
+            print(f"Algun ID no existe en el arbol.")
+            
+    def add_child(self, parent_id, child_id):
+        if parent_id in self.people and child_id in self.people:
+            parent = self.people[parent_id]
+            child = self.people[child_id]
+            parent.add_child(child)
     
     def print_tree(self):
         pass
