@@ -1,3 +1,4 @@
+# Creamos la clase Persona con sus valores iniciales y ademas agregamos la posibilidad de agregar pareja e hijos.
 class Person:
     
     def __init__(self, id: int, name: str):
@@ -21,7 +22,8 @@ class Person:
             print(f"{self.name} ha tenido un hijo: {child.name}.")
         else: 
             print(f"{child.name} ya es un hijo de {self.name}.")
-            
+
+# Creamos la clase Arbol Familiar con sus valores iniciales y ademas agregamos la posibilidad de agregar personas, eliminar personas, agregar parejas, agregar hijos e imprimir el Arbol Genealogico completo.            
 class FamilyTree:
     
     def __init__(self):
